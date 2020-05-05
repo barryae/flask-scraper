@@ -2,11 +2,11 @@ import os
 
 from flask import Flask
 from flask import render_template
-app = Flask(__name__)
 
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
+
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite')
@@ -22,7 +22,11 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.route('/')
+    def home():
+        return render_template('index.html')
 
-@app.route('/')
-def home():
-    return render_template('./scraper/index.html')
+    from . import db
+    db.init_app(app)
+
+    return app
