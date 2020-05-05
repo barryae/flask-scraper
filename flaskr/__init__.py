@@ -1,5 +1,5 @@
 import os
-
+from . import db
 from flask import Flask
 from flask import render_template
 
@@ -24,9 +24,8 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        return render_template('index.html')
+        return render_template('./scraper/index.html')
 
-    from . import db
     db.init_app(app)
 
     return app

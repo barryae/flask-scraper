@@ -1,6 +1,7 @@
 import sqlite3
 
 import click
+
 from flask import current_app
 from flask import g
 from flask.cli import with_appcontext
