@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <h2>Hey! You can scrape Wikipedia. Put in your search term below.</h2>
+    <main>
+        <h3>Options:</h3>
+        <input type="radio" name="format" id="html-format">HTML Formatting (Default)</input>
+        <input type="radio" name="format" id="plain-format">Plain Text</input>
+        <div class="search-input">
+            <input type="text" id="input"></input>
+            <button class="scrape-button" id="scrape-button">Scrape!</button>
+        </div>
+        <p class="content" id="content"></p>
+    </main>
+    <script src="scrape.js"></script>
+</body>
+
+</html>
