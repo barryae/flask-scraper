@@ -2,6 +2,14 @@ import sys as sys
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
+import functools
+from flask import (
+    Blueprint, flash, g, redirect, render_template, request, session, url_for
+)
+from werkzeug.security import check_password_hash, generate_password_hash
+from flaskr.db import get_db
+bp = Blueprint('scrape', __name__, url_prefix='/scrape')
+
 query = sys.argv[1]
 scrapeFormat = sys.argv[2]
 

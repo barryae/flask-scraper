@@ -8,12 +8,21 @@
 <h2>Hey! You can scrape Wikipedia. Put in your search term below.</h2>
 <main>
     <h3>Options:</h3>
-    <input type="radio" name="format" id="html-format">HTML Formatting (Default)</input>
-    <input type="radio" name="format" id="plain-format">Plain Text</input>
-    <div class="search-input">
-        <input type="text" id="input"></input>
-        <button class="scrape-button" id="scrape-button">Scrape!</button>
-    </div>
-    <p class="content" id="content"></p>
+    <form method="post">
+        <input type="radio" name="format" id="html-format">HTML Formatting (Default)
+        <input type="radio" name="format" id="plain-format">Plain Text
+        <div class="search-input">
+            <input type="text" id="input" name="searchWord" required>
+            <input type="submit" value="Search">
+        </div>
+    </form>
 </main>
+{% endblock %}
+
+{%block results%}
+<p class="content" id="content">
+    {% if g.results %}
+    {{g.results['body']}}
+    {%endif%}
+</p>
 {% endblock %}

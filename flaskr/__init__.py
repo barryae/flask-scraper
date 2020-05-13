@@ -28,4 +28,7 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
+    from . import scrape
+    app.register_blueprint(scrape.bp)
+
     return app

@@ -2,9 +2,13 @@
 
 <title>{%block title%}{% endblock %} - Flask Scraper</title>
 <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+
 <section class="content">
-    <header>
-        {%block header%}{%endblock%}
-    </header>
-    {%block content%}{% endblock%}
+
+    {% block header %}{% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block results %}{% endblock %}
+
 </section>
