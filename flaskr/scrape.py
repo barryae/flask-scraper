@@ -2,32 +2,36 @@ import functools
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
-bp = Blueprint('scrape', __name__, url_prefix='/scrape')
+bp = Blueprint('', __name__, url_prefix='/')
+results = ''
 
 
-@bp.route('/wikipedia', methods=('GET', 'POST'))
-def scrapeWikipedia():
+@bp.route('/', methods=('GET', 'POST'))
+def search():
     if request.method == 'POST':
         searchWord = request.form['searchWord']
-        option = request.form['format']
+        analysisType = request.form['format']
         db = get_db()
         error = None
         alreadySearched = db.execute(
-            'SELECT id, body FROM analysis WHERE search_id = ? AND analysis_type= ?', (
-                alreadySearched, option)
+            'SELECT id, search_word FROM search WHERE search_word = ?', (
+                searchWord,)
         ).fetchone()
 
         if not searchWord:
             error = 'Please put in a word to scrape.'
-        elif not option:
+        elif not analysisType:
             error = 'Analysis type not set.'
 
         if alreadySearched is not None:
+            analysis = db.execute(
+                'SELECT id, body FROM analysis WHERE search_id = ? AND analysis_type = ?', (
+                    alreadySearched['id'], analysisType)
+            ).fetchone()
             session.clear()
-            g.results = alreadySearched['body']
-            return render_template('./scraper/scraper.html')
+            results = analysis['body']
+            return render_template('./scraper/scraper.html', results=results)
             # return search to client
 
         if error is None:
@@ -36,20 +40,20 @@ def scrapeWikipedia():
             # save scrape results in db
             db.execute(
                 'INSERT INTO search (search_word) VALUES (?)',
-                (searchWord)
+                (searchWord,)
             )
             search_id = db.execute(
-                'SELECT id FROM search WHERE search_word = ?', (searchWord,)
-            )
+                'SELECT id FROM search WHERE search_word = ?', (
+                    searchWord,)
+            ).fetchone()
             db.execute(
                 'INSERT INTO analysis (search_id, analysis_type, body) VALUES (?,?,?)',
-                (search_id, analysis_type, body)
+                (search_id['id'], analysisType, body)
             )
             db.commit()
-            session.clear()
-            g.results = body
-            return render_template('./scraper/scraper.html')
+            results = body
+            return render_template('./scraper/scraper.html', results=results)
 
         flash(error)
 
-    return render_template('./scraper/scraper.html')
+    return render_template('./scraper/scraper.html', results=results)

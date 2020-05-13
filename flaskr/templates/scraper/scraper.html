@@ -8,7 +8,7 @@
 <h2>Hey! You can scrape Wikipedia. Put in your search term below.</h2>
 <main>
     <h3>Options:</h3>
-    <form method="post">
+    <form method="POST">
         <input type="radio" name="format" id="html-format">HTML Formatting (Default)
         <input type="radio" name="format" id="plain-format">Plain Text
         <div class="search-input">
@@ -21,8 +21,8 @@
 
 {%block results%}
 <p class="content" id="content">
-    {% if g.results %}
-    {{g.results['body']}}
+    {% if results %}
+    {{results}}
     {%endif%}
 </p>
 {% endblock %}
