@@ -24,7 +24,7 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
-        return render_template('./scraper/index.html')
+        return render_template('./scraper/scraper.html')
 
     db.init_app(app)
 

@@ -1,0 +1,19 @@
+{% extends 'base.html'%}
+
+{% block header %}
+<h1>{% block title%}Search & Scrape{% endblock %}</h1>
+{% endblock %}
+
+{% block content%}
+<h2>Hey! You can scrape Wikipedia. Put in your search term below.</h2>
+<main>
+    <h3>Options:</h3>
+    <input type="radio" name="format" id="html-format">HTML Formatting (Default)</input>
+    <input type="radio" name="format" id="plain-format">Plain Text</input>
+    <div class="search-input">
+        <input type="text" id="input"></input>
+        <button class="scrape-button" id="scrape-button">Scrape!</button>
+    </div>
+    <p class="content" id="content"></p>
+</main>
+{% endblock %}

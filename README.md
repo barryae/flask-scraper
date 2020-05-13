@@ -6,10 +6,13 @@ A web scraper using Flask!
 
 - Create a beautiful app that scrapes, analyzes, and stores text data from the web
 - Leverage Flask and Python in general to create a secure and reliable web app
+- Integrate Prosemirror text editor that gives realtime analysis of text being written.
 
 ## Outline of Development
 
 - Create HTML template for search input
+- Connect web-scraper.py to HTML
+- Create NLTK functionality that analyzes search results
 - Implement search, search results, and search analysis results being created in database
 
 ## Technology Used
