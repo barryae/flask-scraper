@@ -3,6 +3,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from flaskr.db import get_db
+from flaskr.webScraper import scrape
 bp = Blueprint('', __name__, url_prefix='/')
 results = ''
 
@@ -26,22 +27,23 @@ def search():
 
         if alreadySearched is not None:
             analysis = db.execute(
-                'SELECT id, body FROM analysis WHERE search_id = ? AND analysis_type = ?', (
-                    alreadySearched['id'], analysisType)
+                'SELECT id, body FROM analysis WHERE search_id = ?', (
+                    alreadySearched['id'],)
             ).fetchone()
-            session.clear()
+
             results = analysis['body']
+
             return render_template('./scraper/scraper.html', results=results)
-            # return search to client
 
         if error is None:
             # scrape using code from web-scraper.py
-            body = 'scrape results'
+            body = scrape(searchWord)
             # save scrape results in db
             db.execute(
                 'INSERT INTO search (search_word) VALUES (?)',
                 (searchWord,)
             )
+            db.commit()
             search_id = db.execute(
                 'SELECT id FROM search WHERE search_word = ?', (
                     searchWord,)
