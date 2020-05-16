@@ -9,8 +9,8 @@
 <main>
     <h3>Options:</h3>
     <form method="POST">
-        <input type="radio" name="format" id="plain-format" value='plain' required>Plain Text
-        <input type="radio" name="format" id="tokenized-format" value='vocab-list' required>Vocab List
+        <input type="radio" name="format" id="plain-format" value='Plain Text' required>Plain Text
+        <input type="radio" name="format" id="tokenized-format" value='Vocab List' required>Vocab List
         <div class="search-input">
             <input type="text" id="input" name="searchWord" required>
             <input type="submit" value="Search">
@@ -20,10 +20,10 @@
 {% endblock %}
 
 {%block results%}
-<h3>Results for {{search}}</h3>
+{% if results %}
+<h3>{{analysisType}} results for {{search}}</h3>
 <p class="content" id="content">
-    {% if results %}
     {{results}}
-    {%endif%}
 </p>
+{%endif%}
 {% endblock %}

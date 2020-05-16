@@ -36,7 +36,7 @@ def search():
         if searchedAndAnalyzed is not None:
             results = searchedAndAnalyzed['body']
 
-            return render(results, searchWord)
+            return render(results, searchWord, analysisType)
 
         if error is None:
             # scrape using code from web-scraper.py
@@ -62,13 +62,13 @@ def search():
 
             results = body
 
-            return render(results, searchWord)
+            return render(results, searchWord, analysisType)
 
         flash(error)
 
-    return render(results, searchWord)
+    return render(results, searchWord, analysisType)
 
 
-def render(results, searchWord):
+def render(results, searchWord, analysisType):
     return render_template('./scraper/scraper.html',
-                           results=results, search=searchWord)
+                           results=results, search=searchWord, analysisType=analysisType)

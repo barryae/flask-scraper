@@ -15,15 +15,15 @@ def scrape(searchWord, analysisType):
     paragraphs = content.find_all('p')
     results = ''
 
-    if analysisType == 'plain':
+    if analysisType == 'Plain Text':
         for p in paragraphs:
             results += p.getText()
 
-    elif analysisType == 'vocab-list':
+    elif analysisType == 'Vocab List':
         for p in paragraphs:
             results += p.getText()
-        words = sorted(set(nltk.word_tokenize(results)))
-        words = [word.lower() for word in words if word.isalpha()]
+        words = set(nltk.word_tokenize(results))
+        words = sorted([word.lower() for word in words if word.isalpha()])
         results = ", ".join(words)
 
     return results
