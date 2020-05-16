@@ -27,9 +27,20 @@ A web scraper using Flask!
 
 ## Steps to develop
 
-In bash:
+Create an environment, activate it, and install Flask:
+
+<https://flask.palletsprojects.com/en/1.1.x/installation/>
+
+While in venv also install nltk & bs4:
 
 ```bash
+pip install nltk bs4
+```
+
+When you want to develop:
+
+```bash
+
 . venv/bin/activate
 
 export FLASK_APP=flaskr

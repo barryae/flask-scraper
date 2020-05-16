@@ -1,4 +1,5 @@
 import sys as sys
+import nltk
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
@@ -9,16 +10,20 @@ def getHTMLContent(link):
     return soup
 
 
-def scrape(searchWord):
+def scrape(searchWord, analysisType):
     content = getHTMLContent('https://en.wikipedia.org/wiki/'+searchWord)
     paragraphs = content.find_all('p')
     results = ''
-    for p in paragraphs:
-        results += p.getText()
-        # if analysisType == 'html':
-        #     return p
-        # if analysisType == 'plain':
-        #     response += p.getText()
-        #     return response
+
+    if analysisType == 'plain':
+        for p in paragraphs:
+            results += p.getText()
+
+    elif analysisType == 'tokenized':
+        for p in paragraphs:
+            results += p.getText()
+        words = sorted(set(nltk.word_tokenize(results)))
+        words = [word.lower() for word in words if word.isalpha()]
+        results = ", ".join(words)
 
     return results

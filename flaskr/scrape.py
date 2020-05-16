@@ -13,6 +13,7 @@ def search():
     if request.method == 'POST':
         searchWord = request.form['searchWord']
         analysisType = request.form['format']
+        print(analysisType)
         db = get_db()
         error = None
         alreadySearched = db.execute(
@@ -37,7 +38,7 @@ def search():
 
         if error is None:
             # scrape using code from web-scraper.py
-            body = scrape(searchWord)
+            body = scrape(searchWord, analysisType)
             # save scrape results in db
             db.execute(
                 'INSERT INTO search (search_word) VALUES (?)',
