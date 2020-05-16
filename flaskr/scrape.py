@@ -20,43 +20,55 @@ def search():
             'SELECT id, search_word FROM search WHERE search_word = ?', (
                 searchWord,)
         ).fetchone()
+        searchedAndAnalyzed = None
+
+        if alreadySearched is not None:
+            searchedAndAnalyzed = db.execute(
+                'SELECT id, body FROM analysis WHERE search_id = ? AND analysis_type = ?', (
+                    alreadySearched['id'], analysisType)
+            ).fetchone()
 
         if not searchWord:
             error = 'Please put in a word to scrape.'
         elif not analysisType:
             error = 'Analysis type not set.'
 
-        if alreadySearched is not None:
-            analysis = db.execute(
-                'SELECT id, body FROM analysis WHERE search_id = ?', (
-                    alreadySearched['id'],)
-            ).fetchone()
+        if searchedAndAnalyzed is not None:
+            results = searchedAndAnalyzed['body']
 
-            results = analysis['body']
-
-            return render_template('./scraper/scraper.html', results=results)
+            return render(results, searchWord)
 
         if error is None:
             # scrape using code from web-scraper.py
             body = scrape(searchWord, analysisType)
             # save scrape results in db
-            db.execute(
-                'INSERT INTO search (search_word) VALUES (?)',
-                (searchWord,)
-            )
-            db.commit()
+            if alreadySearched is None:
+                db.execute(
+                    'INSERT INTO search (search_word) VALUES (?)',
+                    (searchWord,)
+                )
+                db.commit()
+
             search_id = db.execute(
                 'SELECT id FROM search WHERE search_word = ?', (
                     searchWord,)
             ).fetchone()
+
             db.execute(
                 'INSERT INTO analysis (search_id, analysis_type, body) VALUES (?,?,?)',
                 (search_id['id'], analysisType, body)
             )
             db.commit()
+
             results = body
-            return render_template('./scraper/scraper.html', results=results)
+
+            return render(results, searchWord)
 
         flash(error)
 
-    return render_template('./scraper/scraper.html', results=results)
+    return render(results, searchWord)
+
+
+def render(results, searchWord):
+    return render_template('./scraper/scraper.html',
+                           results=results, search=searchWord)

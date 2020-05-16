@@ -19,7 +19,7 @@ def scrape(searchWord, analysisType):
         for p in paragraphs:
             results += p.getText()
 
-    elif analysisType == 'tokenized':
+    elif analysisType == 'vocab-list':
         for p in paragraphs:
             results += p.getText()
         words = sorted(set(nltk.word_tokenize(results)))
